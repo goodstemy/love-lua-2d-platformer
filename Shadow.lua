@@ -18,6 +18,6 @@ end
 function Shadow:draw()
 	love.graphics.setColor(10/255, 10/255, 10/255, 0.2)
 	-- TODO: Make shadow center dynamic
-	love.graphics.ellipse('fill', self.x + 23, self.y + 55, self.width / 2.5, self.height / 5.5)
+	love.graphics.ellipse('fill', self.x + self.width / 2 + 3, self.y + self.height, self.width / 2.5, self.height / 5.5)
 	love.graphics.setColor(1, 1, 1, 1)
 end
