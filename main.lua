@@ -9,6 +9,9 @@ function love.load()
 	shadow = Shadow(player)
 
 	camera:setFollowLerp(0.2)
+	mainMusic = love.audio.newSource('assets/Music/main-theme.mp3', 'stream')
+	mainMusic:setLooping(true)
+	mainMusic:play()
 end
 
 function love.update(dt)
