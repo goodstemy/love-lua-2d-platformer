@@ -4,23 +4,24 @@ local direction
 local activeFrame
 local currentFrame = 1
 local elapsedTime = 0
+local width = 65
+local height = 45
+local horizontalFramesPaddings = {15, 110, 207, 304, 400, 495, 590, 685}
 
 function Player:new()
-	loadLeftFrames()
-	loadRightFrames()
-	loadUpFrames()
-	loadDownFrames()
-	self.image = love.graphics.newImage('assets/Standing/down.png')
+	self.image = love.graphics.newImage('assets/Player/player.png')
 	self.x = 100
 	self.y = 100
 	self.speed = 100
+	loadFrames(self.image)
 end
 
 function Player:draw()
 	if direction == 'left' then
-		love.graphics.draw(leftMovementImage, activeFrame, self.x, self.y, 0, 1.5, 1.5)
+		love.graphics.draw(self.image, activeFrame, self.x, self.y, 0, 1.5, 1.5)
 	elseif direction == 'right' then
-		love.graphics.draw(rightMovementImage, activeFrame, self.x, self.y, 0, 1.5, 1.5)
+		love.graphics.draw(self.image, activeFrame, self.x, self.y, 0, 1.5, 1.5)
+		love.graphics.rectangle('line', self.x, self.y, 55, 45)
 	elseif direction == 'up' then
 		love.graphics.draw(upMovementImage, activeFrame, self.x, self.y, 0, 1.5, 1.5)
 	elseif direction == 'down' then
@@ -59,18 +60,21 @@ function Player:move(dt)
 		player.y = player.y + player.speed * dt
 		direction = 'down'
 		move(dt)
+	else
+		direction = nil
 	end
 end
 
 function move(dt)
 	elapsedTime = elapsedTime + dt
 
-	if elapsedTime > 0.15 then
-		if currentFrame < 4 then
+	if elapsedTime > 0.075 then
+		if currentFrame < #rightMovementFrames then
 			currentFrame = currentFrame + 1
 		else
 			currentFrame = 1
 		end
+		print(currentFrame)
 		if direction == 'left' then
 			activeFrame = leftMovementFrames[currentFrame]
 		elseif direction == 'right' then
@@ -84,24 +88,31 @@ function move(dt)
 	end
 end
 
-function loadLeftFrames()
-	leftMovementFrames = {}
-	leftMovementImage = love.graphics.newImage('assets/Running/left.png')
-	leftMovementFrames[1] = love.graphics.newQuad(0, 0, 22, 40, leftMovementImage:getDimensions())
-	leftMovementFrames[2] = love.graphics.newQuad(22, 0, 22, 40, leftMovementImage:getDimensions())
-	leftMovementFrames[3] = love.graphics.newQuad(44, 0, 22, 40, leftMovementImage:getDimensions())
-	leftMovementFrames[4] = love.graphics.newQuad(66, 0, 22, 40, leftMovementImage:getDimensions())
-	activeFrame = leftMovementFrames[currentFrame]
+function loadFrames(playerImage)
+	loadLeftFrames(playerImage)
+	loadRightFrames(playerImage)
+	loadUpFrames(playerImage)
+	loadDownFrames(playerImage)
 end
 
-function loadRightFrames()
+function loadLeftFrames(playerImage)
+	local totalMovementFrames = 8
+	local verticalPadding = 1075
+	leftMovementFrames = {}
+
+	for i=1, totalMovementFrames do
+		leftMovementFrames[i] = love.graphics.newQuad(horizontalFramesPaddings[i], verticalPadding, width, height, playerImage:getDimensions())
+	end
+end
+
+function loadRightFrames(playerImage)
+	local totalMovementFrames = 8
+	local verticalPadding = 116
 	rightMovementFrames = {}
-	rightMovementImage = love.graphics.newImage('assets/Running/right.png')
-	rightMovementFrames[1] = love.graphics.newQuad(0, 0, 22, 40, rightMovementImage:getDimensions())
-	rightMovementFrames[2] = love.graphics.newQuad(22, 0, 22, 40, rightMovementImage:getDimensions())
-	rightMovementFrames[3] = love.graphics.newQuad(44, 0, 22, 40, rightMovementImage:getDimensions())
-	rightMovementFrames[4] = love.graphics.newQuad(66, 0, 22, 40, rightMovementImage:getDimensions())
-	activeFrame = rightMovementFrames[currentFrame]
+
+	for i=1, totalMovementFrames do
+		rightMovementFrames[i] = love.graphics.newQuad(horizontalFramesPaddings[i], verticalPadding, width, height, playerImage:getDimensions())
+	end
 end
 
 function loadUpFrames()
