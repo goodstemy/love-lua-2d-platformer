@@ -24,7 +24,9 @@ function Player:new()
 	loadFrames(self.image)
 end
 
-function Player:draw()
+function Player:draw(x, y)
+	self.x = x
+	self.y = y
 	love.graphics.draw(self.image, activeFrame, self.x, self.y, 0, 1.5, 1.5)
 end
 

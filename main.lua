@@ -12,6 +12,12 @@ function love.load()
 	mainMusic = love.audio.newSource('assets/Music/main-theme.mp3', 'stream')
 	mainMusic:setLooping(true)
 	mainMusic:play()
+
+	world = love.physics.newWorld(0, 100)
+	player.body = love.physics.newBody(world, 200, 200, 'dynamic')
+	player.body:setMass(32)
+	player.shape = love.physics.newPolygonShape(100, 100, 200, 100, 200, 200)
+	player.fixture = love.physics.newFixture(player.body, player.shape)
 end
 
 function love.update(dt)
@@ -20,6 +26,8 @@ function love.update(dt)
 
 	player:move(dt)
 	shadow:update()
+
+	world:update(dt)
 end
 
 function love.draw()
@@ -28,9 +36,16 @@ function love.draw()
 	camera:attach()
 
 	shadow:draw()
-	player:draw()
+	x, y = player.body:getWorldPoints(player.shape:getPoints())
+	print(x, y)
+	player:draw(x, y)
 
 	love.graphics.rectangle('fill', 10, 10, 10, 10)
 
 	camera:detach()
+
+	-- love.graphics.polygon('line', player.body:getWorldPoints(player.shape:getPoints()))
+
+	-- ONLY FOR DEBUG
+	love.graphics.print("FPS: "..tostring(love.timer.getFPS()), 10, 10)
 end
