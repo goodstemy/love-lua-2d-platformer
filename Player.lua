@@ -18,9 +18,6 @@ local horizontalFramesPaddings = {15, 110, 207, 304, 400, 495, 590, 685}
 
 function Player:new()
 	self.image = love.graphics.newImage('assets/Player/player.png')
-	-- self.x = 100
-	-- self.y = 100
-	-- self.speed = 100
 	loadFrames(self.image)
 end
 
