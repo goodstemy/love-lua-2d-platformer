@@ -23,9 +23,9 @@ function love.update(dt)
 
 	world:update(dt)
 
-	if love.keyboard.isDown("right") then
+	if love.keyboard.isDown('right') then
 		objects.player.body:setX(objects.player.body:getX() + 200 * dt)
-	elseif love.keyboard.isDown("left") then
+	elseif love.keyboard.isDown('left') then
 		objects.player.body:setX(objects.player.body:getX() - 200 * dt)
 	end
 end
@@ -48,14 +48,17 @@ function love.draw()
 end
 
 function love.keyreleased(key)
-   if key == "escape" then
-      love.event.quit()
-   end
+	if key == "escape" then
+	  love.event.quit()
+	end
 
-   print(key, canJump)
-   if key == "space" and canJump then
+	if key == 'x' then
+		player:attack()
+	end
+
+	if key == "space" and canJump then
 		objects.player.body:applyForce(0, -15000)
-   end
+	end
 end
 
 function createWorld()
@@ -72,7 +75,7 @@ function createWorld()
 
 	objects.player = Player()
 	objects.player.body = love.physics.newBody(world, 650/2, 650/2, "dynamic")
-	objects.player.shape = love.physics.newEdgeShape(0, 0, 65, 65)
+	objects.player.shape = love.physics.newEdgeShape(0, 0, 100, 100)
 	objects.player.fixture = love.physics.newFixture(objects.player.body, objects.player.shape, 1)
 	objects.ground.fixture:setUserData('Player')
 
